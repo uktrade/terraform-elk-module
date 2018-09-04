@@ -1,0 +1,31 @@
+[
+  {
+    "name": "curator",
+    "image": "ukti/elastic-curator:latest",
+    "cpu": ${curator_cpu},
+    "memory": ${curator_memory},
+    "essential": true,
+    "environment": [
+      {
+        "name": "ELASTICSEARCH_URL",
+        "value": "https://${elastic_url}"
+      },
+      {
+        "name": "ELASTICSEARCH_USERNAME",
+        "value": "${elastic_username}"
+      },
+      {
+        "name": "ELASTICSEARCH_PASSWORD",
+        "value": "${elastic_password}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${stream_prefix}-curator"
+      }
+    }
+  }
+]

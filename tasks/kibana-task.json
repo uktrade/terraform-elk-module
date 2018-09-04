@@ -1,0 +1,91 @@
+[
+  {
+    "name": "nginx",
+    "image": "ukti/clamav-rest-nginx-proxy:latest",
+    "cpu": ${kibana_nginx_cpu},
+    "memory": ${kibana_nginx_memory},
+    "essential": true,
+    "environment": [
+      {
+        "name": "PROXY_TARGET",
+        "value": "kibana"
+      },
+      {
+        "name": "TARGET_PORT",
+        "value": "5601"
+      }
+    ],
+    "portMappings": [
+      {
+        "containerPort": 443,
+        "hostPort": 443
+      }
+    ],
+    "links": [
+      "kibana"
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${stream_prefix}-nginx"
+      }
+    }
+  },
+  {
+    "name": "kibana",
+    "image": "${docker_image}",
+    "essential": true,
+    "cpu": ${kibana_cpu},
+    "memory": ${kibana_memory},
+    "environment": [
+      {
+        "name": "ELASTICSEARCH_URL",
+        "value": "https://${elastic_url}:9200"
+      },
+      {
+        "name": "XPACK_SECURITY_ENCRYPTIONKEY",
+        "value": "ZXh09y37cQ9030dSSu8B8Rq55nQJHo54wwwgywyC"
+      },
+      {
+        "name": "XPACK_REPORTING_ENCRYPTIONKEY",
+        "value": "ZXh09y37cQ9030dSSu8B8Rq55nQJHo54wwwgywyC"
+      },
+      {
+        "name": "XPACK_MONITORING_ELASTICSEARCH_URL",
+        "value": "https://${elastic_url}:9200"
+      },
+      {
+        "name": "XPACK_MONITORING_ELASTICSEARCH_USERNAME",
+        "value": "${elastic_username}"
+      },
+      {
+        "name": "XPACK_MONITORING_ELASTICSEARCH_PASSWORD",
+        "value": "${elastic_password}"
+      },
+      {
+        "name": "ELASTICSEARCH_USERNAME",
+        "value": "${elastic_username}"
+      },
+      {
+        "name": "ELASTICSEARCH_PASSWORD",
+        "value": "${elastic_password}"
+      }
+    ],
+    "portMappings": [
+      {
+        "containerPort": 5601,
+        "hostPort": 5601
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${stream_prefix}"
+      }
+    }
+  }
+]

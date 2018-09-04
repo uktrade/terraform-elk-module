@@ -1,0 +1,67 @@
+[
+  {
+    "name": "elasticsearch",
+    "image": "${docker_image}",
+    "essential": true,
+    "cpu": ${elastic_cpu},
+    "memory": ${elastic_memory},
+    "portMappings": [
+      {
+        "containerPort": 9200,
+        "hostPort": 9200
+      },
+      {
+        "containerPort": 9300,
+        "hostPort": 9300
+      }
+    ],
+    "ulimits": [
+      {
+        "name": "nofile",
+        "softLimit": 65536,
+        "hardLimit": 65536
+      },
+      {
+        "name": "memlock",
+        "softLimit": -1,
+        "hardLimit": -1
+      }
+    ],
+    "mountPoints": [
+      {
+        "sourceVolume": "data",
+        "containerPath": "/usr/share/elasticsearch/data"
+      }
+    ],
+    "environment": [
+      {
+        "name": "ES_SSL_KEY",
+        "value": "${es_ssl_key}"
+      },
+      {
+        "name": "ES_SSL_CERT",
+        "value": "${es_ssl_cert}"
+      },
+      {
+        "name": "ES_SSL_CA",
+        "value": "${es_ssl_ca}"
+      },
+      {
+        "name": "CLUSTER_SECURITY_GROUP",
+        "value": "${cluster_security_group}"
+      },
+      {
+        "name": "ES_JAVA_OPTS",
+        "value": "-Xms8g -Xmx8g"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${stream_prefix}"
+      }
+    }
+  }
+]

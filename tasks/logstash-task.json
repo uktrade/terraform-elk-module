@@ -1,0 +1,53 @@
+[
+  {
+    "name": "logstash",
+    "image": "${docker_image}",
+    "essential": true,
+    "cpu": 2048,
+    "memory": 3854,
+    "environment": [
+      {
+        "name": "XPACK_MONITORING_ELASTICSEARCH_URL",
+        "value": "https://${elastic_url}:9200"
+      },
+      {
+        "name": "PATH_CONFIG",
+        "value": "/usr/share/logstash/pipeline/prod-private/"
+      },
+      {
+        "name": "XPACK_MONITORING_ELASTICSEARCH_PASSWORD",
+        "value": "${logstash_password}"
+      },
+      {
+        "name": "region",
+        "value": "${region}"
+      },
+      {
+        "name": "kinesis_stream_name",
+        "value": "${kinesis_stream_name}"
+      },
+      {
+        "name": "application_name",
+        "value": "webops-elk-logstash-kinesis"
+      }
+    ],
+    "portMappings": [
+      {
+        "containerPort": 5044,
+        "hostPort": 5044
+      },
+      {
+        "containerPort": 3332,
+        "hostPort": 3332
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "${stream_prefix}"
+      }
+    }
+  }
+]

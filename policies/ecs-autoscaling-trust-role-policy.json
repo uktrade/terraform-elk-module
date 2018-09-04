@@ -1,0 +1,13 @@
+{
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": [
+          "application-autoscaling.amazonaws.com"
+        ]
+      },
+      "Effect": "Allow"
+    }
+  ]
+}
