@@ -32,3 +32,5 @@ variable "curator_conf" {
 variable "aws_ami" {}
 variable "environment" {}
 variable "service" {}
+
+variable "cwl_retention_in_days" {}
