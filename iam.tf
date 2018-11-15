@@ -114,4 +114,3 @@ resource "aws_iam_policy_attachment" "autoscaling-policy-attachment" {
 
   policy_arn = "${aws_iam_policy.ecs-autoscaling-policy.arn}"
 }
-

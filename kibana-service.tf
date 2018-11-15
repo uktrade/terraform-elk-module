@@ -9,9 +9,9 @@ data "template_file" "kibana-ecs-task" {
     cluster_name = "${aws_ecs_cluster.kibana-cluster.name}"
     log_group = "${var.aws_conf["log_group"]}"
     region = "${var.aws_conf["region"]}"
-    elastic_url = "${aws_elb.elastic-elb.dns_name}"
-    elastic_username = "${var.elastic_conf["elastic_username"]}"
-    elastic_password = "${var.elastic_conf["elastic_password"]}"
+    elastic_url = "${aws_route53_record.elastic-internal-alias.fqdn}"
+    elastic_username = "${var.kibana_conf["kibana_username"]}"
+    elastic_password = "${var.kibana_conf["kibana_password"]}"
     log_group = "${aws_cloudwatch_log_group.elk-cwl-log-group.name}"
     stream_prefix = "awslogs-${var.kibana_conf["service"]}"
 
@@ -23,6 +23,8 @@ data "template_file" "kibana-ecs-task" {
     kibana_password = "${var.kibana_conf["kibana_password"]}"
 
     docker_image = "${var.kibana_conf["docker_image"]}"
+
+    xpack_encryption_key = "${var.kibana_conf["xpack_encryption_key"]}"
   }
 }
 

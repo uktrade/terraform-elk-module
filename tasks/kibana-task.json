@@ -46,11 +46,11 @@
       },
       {
         "name": "XPACK_SECURITY_ENCRYPTIONKEY",
-        "value": "ZXh09y37cQ9030dSSu8B8Rq55nQJHo54wwwgywyC"
+        "value": "${xpack_encryption_key}"
       },
       {
         "name": "XPACK_REPORTING_ENCRYPTIONKEY",
-        "value": "ZXh09y37cQ9030dSSu8B8Rq55nQJHo54wwwgywyC"
+        "value": "${xpack_encryption_key}"
       },
       {
         "name": "XPACK_MONITORING_ELASTICSEARCH_URL",
@@ -71,6 +71,10 @@
       {
         "name": "ELASTICSEARCH_PASSWORD",
         "value": "${elastic_password}"
+      },
+      {
+        "name": "SSL_VERIFICATION_MODE",
+        "value": "none"
       }
     ],
     "portMappings": [

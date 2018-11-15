@@ -9,7 +9,7 @@ data "template_file" "public_logstash-ecs-task" {
     cluster_name = "${aws_ecs_cluster.public_logstash-cluster.name}"
 
     region = "${var.aws_conf["region"]}"
-    elastic_url = "${aws_elb.elastic-elb.dns_name}"
+    elastic_url = "${aws_route53_record.elastic-internal-alias.fqdn}"
 
     docker_image = "${var.public_logstash_conf["docker_image"]}"
 

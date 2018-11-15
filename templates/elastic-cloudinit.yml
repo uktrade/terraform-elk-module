@@ -1,0 +1,15 @@
+#cloud-config
+
+runcmd:
+  - mkdir -p /ecs
+  - sysctl -w vm.max_map_count=262144
+  - echo "/dev/xvdb /ecs ext4 defaults 0 0" >> /etc/fstab
+  - sysctl fs.inotify.max_user_watches=65535
+  - mkfs.ext4 /dev/xvdb
+  - mount /ecs
+  - mkdir /ecs/es-data
+  - chown 1000:1000 /ecs/es-data
+
+bootcmd:
+  - mkdir -p /etc/ecs
+  - echo 'ECS_CLUSTER=${ecs_cluster}' >> /etc/ecs/ecs.config

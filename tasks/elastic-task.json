@@ -53,6 +53,10 @@
       {
         "name": "ES_JAVA_OPTS",
         "value": "-Xms8g -Xmx8g"
+      },
+      {
+        "name": "ELASTIC_PASSWORD",
+        "value": "${elastic_password}"
       }
     ],
     "logConfiguration": {

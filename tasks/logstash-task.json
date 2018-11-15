@@ -3,8 +3,8 @@
     "name": "logstash",
     "image": "${docker_image}",
     "essential": true,
-    "cpu": 2048,
-    "memory": 3854,
+    "cpu": 2000,
+    "memory": 3600,
     "environment": [
       {
         "name": "XPACK_MONITORING_ELASTICSEARCH_URL",
@@ -12,7 +12,7 @@
       },
       {
         "name": "PATH_CONFIG",
-        "value": "/usr/share/logstash/pipeline/prod-private/"
+        "value": "/usr/share/logstash/pipeline/"
       },
       {
         "name": "XPACK_MONITORING_ELASTICSEARCH_PASSWORD",
@@ -28,7 +28,7 @@
       },
       {
         "name": "application_name",
-        "value": "webops-elk-logstash-kinesis"
+        "value": "elk-logstash-kinesis"
       }
     ],
     "portMappings": [

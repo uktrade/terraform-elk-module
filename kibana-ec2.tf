@@ -1,3 +1,11 @@
+data "template_file" "kibana-cloudinit" {
+  template = "${file("${path.module}/templates/base-cloudinit.yml")}"
+
+  vars {
+    ecs_cluster = "${aws_ecs_cluster.kibana-cluster.id}"
+  }
+}
+
 resource "aws_security_group" "kibana-elb-sg" {
   name = "${var.kibana_conf["service"]}-elb-sg"
   description = "${var.kibana_conf["service"]} ELB security group"
@@ -12,12 +20,19 @@ resource "aws_security_group" "kibana-elb-sg" {
       "0.0.0.0/0"]
   }
 
+  ingress {
+    from_port = 5601
+    to_port = 5601
+    protocol = "tcp"
+    cidr_blocks = [
+      "0.0.0.0/0"]
+  }
+
   egress {
     from_port = 0
     to_port = 0
     protocol = "-1"
-    cidr_blocks = [
-      "0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags {
@@ -29,11 +44,8 @@ resource "aws_security_group" "kibana-elb-sg" {
 resource "aws_elb" "kibana-elb" {
   name = "${var.kibana_conf["service"]}-elb"
 
-  // NOTE : temporarily make public
   subnets = [
-    "${split(",", module.vpc.vpc_conf["subnets_public"])}"]
-//  subnets = [
-//    "${split(",", module.vpc.vpc_conf["subnets_private"])}"]
+    "${split(",", module.vpc.vpc_conf["subnets_private"])}"]
 
   security_groups = [
     "${aws_security_group.kibana-elb-sg.id}"
@@ -76,7 +88,7 @@ resource "aws_launch_configuration" "kibana-service-lc" {
     delete_on_termination = true
   }
 
-//  user_data = "${data.template_file.kibana-cloudinit.rendered}"
+  user_data = "${data.template_file.kibana-cloudinit.rendered}"
 
   key_name = "${var.aws_conf["key_name"]}"
 
@@ -95,8 +107,7 @@ resource "aws_security_group" "kibana-cluster-sg" {
     from_port = 443
     to_port = 443
     protocol = "tcp"
-    security_groups = [
-      "${aws_security_group.kibana-elb-sg.id}"]
+    cidr_blocks = ["${var.aws_conf["cidr_block"]}"]
   }
 
   egress {

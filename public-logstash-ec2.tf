@@ -1,3 +1,11 @@
+data "template_file" "public_logstash-cloudinit" {
+  template = "${file("${path.module}/templates/base-cloudinit.yml")}"
+
+  vars {
+    ecs_cluster = "${aws_ecs_cluster.public_logstash-cluster.id}"
+  }
+}
+
 resource "aws_security_group" "public_logstash-elb-sg" {
   name = "${var.public_logstash_conf["service"]}-elb-sg"
   description = "${var.public_logstash_conf["service"]} ELB security group"
@@ -70,7 +78,7 @@ resource "aws_launch_configuration" "public_logstash-service-lc" {
     delete_on_termination = true
   }
 
-//  user_data = "${data.template_file.public_logstash-cloudinit.rendered}"
+  user_data = "${data.template_file.public_logstash-cloudinit.rendered}"
 
   key_name = "${var.aws_conf["key_name"]}"
 
@@ -134,6 +142,6 @@ resource "aws_autoscaling_group" "public_logstash-asg" {
   }
 }
 
-output "logstash-elb-name" {
+output "public_logstash-elb-name" {
   value = "${aws_elb.public_logstash-elb.dns_name}"
 }

@@ -1,10 +1,10 @@
-//data "template_file" "logstash-cloudinit" {
-//  template = "${file("logstash-cloudinit.yml")}"
-//
-//  vars {
-//    cluster_name = "${aws_ecs_cluster.logstash-cluster.id}"
-//  }
-//}
+data "template_file" "logstash-cloudinit" {
+  template = "${file("${path.module}/templates/base-cloudinit.yml")}"
+
+  vars {
+    ecs_cluster = "${aws_ecs_cluster.logstash-cluster.id}"
+  }
+}
 
 resource "aws_launch_configuration" "logstash-service-lc" {
   image_id = "${var.aws_ami}"
@@ -21,7 +21,7 @@ resource "aws_launch_configuration" "logstash-service-lc" {
     delete_on_termination = true
   }
 
-//  user_data = "${data.template_file.logstash-cloudinit.rendered}"
+  user_data = "${data.template_file.logstash-cloudinit.rendered}"
 
   key_name = "${var.aws_conf["key_name"]}"
 

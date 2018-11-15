@@ -1,3 +1,11 @@
+data "template_file" "elastic-cloudinit" {
+  template = "${file("${path.module}/templates/elastic-cloudinit.yml")}"
+
+  vars {
+    ecs_cluster = "${aws_ecs_cluster.elastic-cluster.id}"
+  }
+}
+
 resource "aws_security_group" "elastic-elb-sg" {
   name = "${var.elastic_conf["service"]}-elb-sg"
   description = "${var.elastic_conf["service"]} ELB security group"
@@ -55,22 +63,6 @@ resource "aws_elb" "elastic-elb" {
   }
 }
 
-//data "template_file" "elastic-cloudinit" {
-//  template = "${file("elastic-cloudinit.yml")}"
-//
-//  vars {
-//
-//    aws_region = "${var.aws_conf["region"]}"
-//    snapshot_bucket = "${aws_s3_bucket.elastic-backup.bucket}"
-//    ecs_cluster = "${aws_ecs_cluster.elastic-cluster.id}"
-//    elk_snapshot_script_repo = "${var.elastic_conf["elk_snapshot_script_repo"]}"
-//    instance_check_script = "${var.elastic_conf["instance_check_script"]}"
-//    run_snapshot_script = "${var.elastic_conf["run_snapshot_script"]}"
-//    cluster_name = "${aws_ecs_cluster.elastic-cluster.id}"
-//    elastic_asg = "${var.elastic_conf["service"]}-asg"
-//  }
-//}
-
 resource "aws_launch_configuration" "elastic-service-lc" {
   image_id = "${var.aws_ami}"
   instance_type = "${var.elastic_conf["instance_type"]}"
@@ -93,6 +85,8 @@ resource "aws_launch_configuration" "elastic-service-lc" {
     delete_on_termination = false
     encrypted = true
   }
+
+  user_data = "${data.template_file.elastic-cloudinit.rendered}"
 
   key_name = "${var.aws_conf["key_name"]}"
 

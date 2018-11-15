@@ -31,7 +31,7 @@ resource "aws_ecs_task_definition" "elastic-ecs-task-definition" {
 
   volume {
     name = "data"
-      host_path = "/ecs/es-data"
+        host_path = "/ecs/es-data"
   }
 }
 

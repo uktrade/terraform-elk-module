@@ -9,7 +9,7 @@ data "template_file" "logstash-ecs-task" {
     cluster_name = "${aws_ecs_cluster.logstash-cluster.name}"
 
     region = "${var.aws_conf["region"]}"
-    elastic_url = "${aws_elb.elastic-elb.dns_name}"
+    elastic_url = "${aws_route53_record.elastic-internal-alias.fqdn}"
 
     docker_image = "${var.logstash_conf["docker_image"]}"
 
@@ -20,7 +20,9 @@ data "template_file" "logstash-ecs-task" {
 
     log_group = "${aws_cloudwatch_log_group.elk-cwl-log-group.name}"
     stream_prefix = "awslogs-${var.logstash_conf["service"]}"
-    kinesis_stream_name = "${aws_kinesis_stream.elk_kinesis.name}"
+//  temporary override:
+//    kinesis_stream_name = "${aws_kinesis_stream.elk_kinesis.name}"
+    kinesis_stream_name = "webops-elk-kinesis"
   }
 }
 
