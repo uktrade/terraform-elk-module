@@ -17,15 +17,7 @@ resource "aws_security_group" "kibana-elb-sg" {
     to_port = 443
     protocol = "tcp"
     cidr_blocks = [
-      "0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port = 5601
-    to_port = 5601
-    protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"]
+      "${var.peered_vpc_cidr}"]
   }
 
   egress {

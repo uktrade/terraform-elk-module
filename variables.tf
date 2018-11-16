@@ -34,3 +34,5 @@ variable "environment" {}
 variable "service" {}
 
 variable "cwl_retention_in_days" {}
+
+variable "peered_vpc_cidr" {}
