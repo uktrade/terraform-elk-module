@@ -141,7 +141,7 @@ resource "aws_autoscaling_policy" "kibana-ecs-cluster-scale-up" {
 }
 
 resource "aws_autoscaling_policy" "kibana-ecs-cluster-scale-down" {
-  name = "${var.kibana_conf["service"]}-scale-up"
+  name = "${var.kibana_conf["service"]}-scale-down"
   autoscaling_group_name = "${aws_autoscaling_group.kibana-asg.name}"
   adjustment_type = "ChangeInCapacity"
   policy_type = "SimpleScaling"

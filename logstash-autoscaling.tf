@@ -140,7 +140,7 @@ resource "aws_autoscaling_policy" "logstash-ecs-cluster-scale-up" {
 }
 
 resource "aws_autoscaling_policy" "logstash-ecs-cluster-scale-down" {
-  name = "${var.logstash_conf["service"]}-scale-up"
+  name = "${var.logstash_conf["service"]}-scale-down"
   autoscaling_group_name = "${aws_autoscaling_group.logstash-asg.name}"
   adjustment_type = "ChangeInCapacity"
   policy_type = "SimpleScaling"
