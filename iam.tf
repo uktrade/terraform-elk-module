@@ -51,6 +51,7 @@ data "template_file" "kinesis_get_template" {
 
   vars {
     additional_kinesis_arn = "${var.additional_kinesis_arn}"
+    kinesis_from_cloudwatch_arn = "${aws_kinesis_stream.elk_kinesis_from_cloudwatch.arn}"
     kinesis_arn = "${aws_kinesis_stream.elk_kinesis.arn}"
     kms_arn = "${aws_kms_key.elk-data-key.arn}"
   }

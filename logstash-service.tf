@@ -23,6 +23,7 @@ data "template_file" "logstash-ecs-task" {
 //  temporary override:
 //    kinesis_stream_name = "${aws_kinesis_stream.elk_kinesis.name}"
     kinesis_stream_name = "webops-elk-kinesis"
+    kinesis_from_cloudwatch_stream_name = "${aws_kinesis_stream.elk_kinesis_from_cloudwatch.name}"
   }
 }
 

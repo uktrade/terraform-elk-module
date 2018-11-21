@@ -11,10 +11,6 @@
         "value": "https://${elastic_url}:9200"
       },
       {
-        "name": "PATH_CONFIG",
-        "value": "/usr/share/logstash/pipeline/"
-      },
-      {
         "name": "XPACK_MONITORING_ELASTICSEARCH_PASSWORD",
         "value": "${logstash_password}"
       },
@@ -25,6 +21,10 @@
       {
         "name": "kinesis_stream_name",
         "value": "${kinesis_stream_name}"
+      },
+      {
+        "name": "kinesis_from_cloudwatch_stream_name",
+        "value": "${kinesis_from_cloudwatch_stream_name}"
       },
       {
         "name": "application_name",
