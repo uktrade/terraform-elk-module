@@ -13,9 +13,11 @@
       "Action": [
         "kinesis:PutRecord",
         "kinesis:PutRecords",
-        "kinesis:DescribeStream"
+        "kinesis:DescribeStream",
+        "kinesis:ListShards"
       ],
       "Resource": [
+        "${additional_kinesis_arn}",
         "${kinesis_arn}"
       ]
     }
