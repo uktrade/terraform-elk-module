@@ -15,5 +15,16 @@ resource "aws_iam_role" "logstash-autoscaling-role" {
     name = "${var.logstash_conf["service"]}-autoscaling_role"
     path = "/"
 
-    assume_role_policy = "${file("${path.module}/policies/ecs-autoscaling-trust-role-policy.json")}"
+    assume_role_policy = "${data.aws_iam_policy_document.logstash-autoscaling-role.json}"
+}
+
+data "aws_iam_policy_document" "logstash-autoscaling-role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["application-autoscaling.amazonaws.com"]
+    }
+  }
 }
