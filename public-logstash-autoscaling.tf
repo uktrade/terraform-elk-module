@@ -82,7 +82,7 @@ resource "aws_appautoscaling_target" "public_logstash-ecs_target" {
   max_capacity = 4
   min_capacity = 1
   resource_id = "service/${var.public_logstash_conf["service"]}/${aws_ecs_service.public_logstash-ecs-service.name}"
-  role_arn = "${aws_iam_role.autoscaling-role.arn}"
+  role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace = "ecs"
 }

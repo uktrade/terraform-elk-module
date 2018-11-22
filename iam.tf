@@ -1,7 +1,18 @@
 resource "aws_iam_role" "autoscaling-role" {
   name = "${var.service}-autoscaling_role"
   path = "/"
-  assume_role_policy = "${file("${path.module}/policies/ecs-autoscaling-trust-role-policy.json")}"
+  assume_role_policy = "${data.aws_iam_policy_document.application_autoscaling.json}"
+}
+
+data "aws_iam_policy_document" "application_autoscaling" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["application-autoscaling.amazonaws.com"]
+    }
+  }
 }
 
 resource "aws_iam_policy" "ecs-autoscaling-policy" {
@@ -29,6 +40,7 @@ data "template_file" "kinesis_put_template" {
   template = "${file("${path.module}/policies/kinesis-put.json")}"
 
   vars {
+    additional_kinesis_arn = "${var.additional_kinesis_arn}"
     kinesis_arn = "${aws_kinesis_stream.elk_kinesis.arn}"
     kms_arn = "${aws_kms_key.elk-data-key.arn}"
   }
@@ -38,6 +50,7 @@ data "template_file" "kinesis_get_template" {
   template = "${file("${path.module}/policies/kinesis-get.json")}"
 
   vars {
+    additional_kinesis_arn = "${var.additional_kinesis_arn}"
     kinesis_arn = "${aws_kinesis_stream.elk_kinesis.arn}"
     kms_arn = "${aws_kms_key.elk-data-key.arn}"
   }

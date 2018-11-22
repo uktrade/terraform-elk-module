@@ -142,6 +142,10 @@ resource "aws_autoscaling_group" "kibana-asg" {
     value               = "${var.kibana_conf["service"]}"
     propagate_at_launch = true
   }
+
+  lifecycle {
+    ignore_changes = ["desired_capacity"]
+  }
 }
 
 output "kibana-elb-name" {
