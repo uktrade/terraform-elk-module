@@ -140,6 +140,10 @@ resource "aws_autoscaling_group" "public_logstash-asg" {
     value               = "${var.public_logstash_conf["service"]}"
     propagate_at_launch = true
   }
+
+  lifecycle {
+    ignore_changes = ["desired_capacity"]
+  }
 }
 
 output "public_logstash-elb-name" {

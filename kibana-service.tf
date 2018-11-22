@@ -47,4 +47,8 @@ resource "aws_ecs_service" "kibana-ecs-service" {
         container_name = "nginx"
         container_port = 443
     }
+
+    lifecycle {
+        ignore_changes = ["desired_count"]
+    }
 }

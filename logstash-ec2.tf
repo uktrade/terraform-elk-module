@@ -74,4 +74,8 @@ resource "aws_autoscaling_group" "logstash-asg" {
     value               = "${var.logstash_conf["service"]}"
     propagate_at_launch = true
   }
+
+  lifecycle {
+    ignore_changes = ["desired_capacity"]
+  }
 }

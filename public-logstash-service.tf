@@ -44,4 +44,8 @@ resource "aws_ecs_service" "public_logstash-ecs-service" {
         container_name = "logstash"
         container_port = 3332
     }
+
+    lifecycle {
+        ignore_changes = ["desired_count"]
+    }
 }
