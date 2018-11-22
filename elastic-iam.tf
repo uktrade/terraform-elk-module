@@ -8,7 +8,21 @@ resource "aws_iam_role" "elastic-ecs-instance-role" {
     name = "${var.elastic_conf["service"]}-ecs_role"
     path = "/"
 
-    assume_role_policy = "${file("${path.module}/policies/ecs-trust-role-policy.json")}"
+    assume_role_policy = "${data.aws_iam_policy_document.elastic-ecs-instance-role.json}"
+}
+
+data "aws_iam_policy_document" "elastic-ecs-instance-role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = [
+        "ecs.amazonaws.com",
+        "ec2.amazonaws.com",
+      ]
+    }
+  }
 }
 
 resource "aws_iam_policy" "elastic-policy" {

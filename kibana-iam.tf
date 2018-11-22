@@ -7,8 +7,21 @@ resource "aws_iam_instance_profile" "kibana-ecs-instance-profile" {
 resource "aws_iam_role" "kibana-ecs-instance-role" {
     name = "${var.kibana_conf["service"]}-ecs_role"
     path = "/"
+    assume_role_policy = "${data.aws_iam_policy_document.kibana-ecs-instance-role.json}"
+}
 
-    assume_role_policy = "${file("${path.module}/policies/ecs-trust-role-policy.json")}"
+data "aws_iam_policy_document" "kibana-ecs-instance-role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = [
+        "ecs.amazonaws.com",
+        "ec2.amazonaws.com",
+      ]
+    }
+  }
 }
 
 resource "aws_iam_role" "kibana-autoscaling-role" {
