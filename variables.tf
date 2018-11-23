@@ -38,3 +38,6 @@ variable "cwl_retention_in_days" {}
 variable "peered_vpc_cidr" {}
 
 variable "additional_kinesis_arn" {}
+variable "cross_account_to_kinesis_source_account_ids" {
+  type = "list"
+}

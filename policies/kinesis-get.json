@@ -18,6 +18,7 @@
       ],
       "Resource": [
         "${additional_kinesis_arn}",
+        "${kinesis_from_cloudwatch_arn}",
         "${kinesis_arn}"
       ]
     }
